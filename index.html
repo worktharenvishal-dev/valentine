@@ -32,21 +32,43 @@
             padding: 40px 30px; border-radius: 30px; text-align: center; 
             width: 85%; max-width: 350px; position: relative; z-index: 10;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
-            min-height: 320px; display: flex; flex-direction: column; justify-content: center;
+            min-height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .stage-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         .typewriter { 
             font-family: 'Dancing Script', cursive; color: var(--primary); 
-            font-size: 1.6rem; line-height: 1.4; margin: 0 auto;
+            font-size: 1.7rem; line-height: 1.4; margin-bottom: 20px;
+            width: 100%;
         }
 
-        .big-question { font-size: 2.2rem !important; font-weight: 700; }
+        .big-question { font-size: 2.5rem !important; font-weight: 700; margin-bottom: 30px; }
 
-        .btn-container { margin-top: 25px; opacity: 0; transition: opacity 0.3s ease; visibility: hidden; }
+        .btn-container { 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0; 
+            transition: opacity 0.4s ease; 
+            visibility: hidden; 
+        }
         .btn-container.show { opacity: 1; visibility: visible; }
         
-        button.main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
-        .no-btn { background: #eee; color: #888; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
+        button.main { 
+            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
+            color: white; border: none; padding: 16px; border-radius: 50px; 
+            font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.2);
+        }
+        .no-btn { background: #eee; color: #888; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; margin-top: 15px; font-size: 0.9rem; }
 
         #music-control {
             position: fixed; top: 20px; right: 20px; z-index: 2000;
@@ -56,12 +78,11 @@
 
         /* Success Animation */
         #success-screen h1 { 
-            font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 4rem;
-            animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 4.5rem;
+            margin: 0;
+            animation: pop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-        #reason-screen, #name-screen, #ask-screen, #success-screen { display: none; }
+        @keyframes pop { 0% { transform: scale(0) rotate(-10deg); } 100% { transform: scale(1) rotate(0); } }
     </style>
 </head>
 <body>
@@ -72,24 +93,24 @@
     <div id="hearts-container"></div>
 
     <div class="card">
-        <div id="start-screen">
-            <p style="font-weight: 600;">5 years of memories have led to this moment...</p>
-            <p style="font-weight: 600;">Why not we make this year special? with the both of us?</p>
+        <div id="start-screen" class="stage-container" style="display: flex;">
+            <p style="font-weight: 600; font-size: 1.1rem; margin-bottom: 10px;">5 years of memories have led to this moment...</p>
+            <p style="font-weight: 600; font-size: 1.1rem; margin-bottom: 30px;">Why not we make this year special? with the both of us?</p>
             <button class="main" onclick="startExperience()">Start ❤️</button>
         </div>
 
-        <div id="reason-screen">
+        <div id="reason-screen" class="stage-container">
             <div id="reason-text" class="typewriter"></div>
             <div id="reason-btn-container" class="btn-container">
                 <button class="main" onclick="handleNext()">Keep reading...</button>
             </div>
         </div>
 
-        <div id="name-screen">
+        <div id="name-screen" class="stage-container">
             <div id="name-text" class="typewriter"></div>
         </div>
 
-        <div id="ask-screen">
+        <div id="ask-screen" class="stage-container">
             <div id="ask-text" class="typewriter big-question"></div>
             <div id="ask-btn-container" class="btn-container">
                 <button class="main" id="yesBtn" onclick="celebrate()">YES! ❤️</button>
@@ -97,11 +118,11 @@
             </div>
         </div>
 
-        <div id="success-screen">
+        <div id="success-screen" class="stage-container">
             <h1>YAY! ❤️</h1>
-            <p style="font-weight: 600; color: #444;">It's a date!</p>
-            <p>I'm glad you didn't say no to me x</p>
-            <p>See you on the 14th my beautiful princess</p>
+            <p style="font-weight: 600; color: #444; font-size: 1.2rem; margin-top: 10px;">It's a date!</p>
+            <p style="color: #444; margin: 5px 0;">I'm glad you didn't say no to me x</p>
+            <p style="color: #444; font-weight: 600;">See you on the 14th my beautiful princess</p>
         </div>
     </div>
 
@@ -127,15 +148,15 @@
 
         function runTypewriter(text, elementId, btnId) {
             const el = document.getElementById(elementId);
-            const btn = document.getElementById(btnId);
-            btn.classList.remove('show');
+            const btn = btnId ? document.getElementById(btnId) : null;
+            if (btn) btn.classList.remove('show');
             el.innerHTML = "";
             let i = 0;
             (function type() {
                 if (i < text.length) {
                     el.innerHTML += text.charAt(i++);
                     setTimeout(type, 50);
-                } else { btn.classList.add('show'); }
+                } else { if (btn) btn.classList.add('show'); }
             })();
         }
 
@@ -147,11 +168,13 @@
                 document.getElementById('reason-screen').style.display = 'none';
                 document.getElementById('name-screen').style.display = 'flex';
                 runTypewriter("So... My Beautiful Angelina Teh Hui Szen", 'name-text', null);
+                
+                // Fixed transition to ensure Name screen disappears before Ask screen
                 setTimeout(() => {
                     document.getElementById('name-screen').style.display = 'none';
                     document.getElementById('ask-screen').style.display = 'flex';
                     runTypewriter("Will you be my Valentine?", 'ask-text', 'ask-btn-container');
-                }, 3500);
+                }, 4000); // Slightly longer to finish the long name
             }
         }
 
@@ -169,15 +192,16 @@
             document.getElementById('ask-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'flex';
             
-            const duration = 10 * 1000;
+            const duration = 12 * 1000;
             const end = Date.now() + duration;
             (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
 
+        // Background Hearts
         setInterval(() => {
             const heart = document.createElement('div');
             heart.innerHTML = '❤️'; heart.className = 'heart';
