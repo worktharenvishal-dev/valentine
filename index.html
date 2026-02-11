@@ -3,73 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Best Friend and Lover</title>
+    <title>For Angeline</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --pink: #d63384; --overlay: rgba(255, 255, 255, 0.85); }
-        
-        body { 
-            margin: 0; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center;
-            background-image: url('us.jpg'); /* REPLACE WITH YOUR IMAGE FILENAME */
-            background-size: cover; background-position: center;
+        :root {
+            --primary: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --text: #594e52;
         }
 
-        .glass-card {
-            background: var(--overlay); backdrop-filter: blur(5px);
-            padding: 30px; border-radius: 20px; width: 85%; max-width: 400px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('us.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
         }
 
-        #reason-section, #question-section, #success-section { display: none; }
-        #reason-section { display: block; } /* Start with reasons */
-
-        .reason-text { font-style: italic; color: var(--pink); font-size: 1.1rem; margin: 20px 0; min-height: 60px; }
-        
-        button { 
-            padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; 
+        .polaroid-card {
+            background: white;
+            padding: 20px 20px 60px 20px;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 1.5s ease-in;
         }
 
-        .btn-next { background: var(--pink); color: white; width: 100%; }
-        .btn-yes { background: var(--pink); color: white; padding: 12px 40px; }
-        .btn-no { background: #eee; color: #777; position: absolute; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .btn-container { display: flex; justify-content: center; gap: 20px; height: 50px; position: relative; margin-top: 20px; }
-        
-        h1 { color: var(--pink); font-size: 1.5rem; margin-top: 0; }
+        .content-box { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
+
+        h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2rem; margin-bottom: 10px; }
+        p { color: var(--text); line-height: 1.6; font-size: 1.1rem; }
+
+        /* Stage Buttons */
+        .btn-next {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* The Question Buttons */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .btn-yes {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .btn-no {
+            background: #f8f9fa;
+            color: #999;
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.1s;
+        }
+
+        /* Animations */
+        .typing {
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 2.5s steps(30, end), blink 0.5s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--primary) } }
+
+        #question-section, #final-ask, #success-section { display: none; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="glass-card">
-        <div id="reason-section">
-            <h1>A few reasons why...</h1>
-            <div id="reason-display" class="reason-text">"5 years of memories..."</div>
-            <button class="btn-next" onclick="nextReason()">Next Reason ❤️</button>
-        </div>
-
-        <div id="question-section">
-            <h1>So, Angelina Teh Hui Szen...</h1>
-            <p>5 years as best friends has been a dream. Let's make this year special., with each other.</p>
-            <p><strong>Will you be my Valentine?</strong></p>
-            <div class="btn-container">
-                <button id="yesBtn" class="btn-yes" onclick="celebrate()">YES!</button>
-                <button id="noBtn" class="btn-no" onmouseover="moveButton()">No</button>
+    <div class="polaroid-card">
+        <div class="content-box">
+            
+            <div id="reason-section">
+                <p id="reason-text">"5 years ago, we were just friends..."</p>
+                <button class="btn-next" onclick="nextReason()">Keep reading...</button>
             </div>
-        </div>
 
-        <div id="success-section">
-            <h1 style="font-size: 2rem;">CONGRATULATIONS ON LOCKING YOUR SPOT 🎉</h1>
-            <p>I have plans ready for the both of us! I'll pick you up on the 14th!</p>
-            <p>Check your iMessage ❤️</p>
+            <div id="name-section" style="display:none;">
+                <h1 class="typing">So... Angeline Teh Hui Szen</h1>
+            </div>
+
+            <div id="final-ask">
+                <h1>Will you be my Valentine?</h1>
+                <p>5 years as best friends has been a dream. Let's make this year special, with each other.</p>
+                <div class="btn-container">
+                    <button id="yesBtn" class="btn-yes" onclick="celebrate()">YES!</button>
+                    <button id="noBtn" class="btn-no" onmouseover="moveButton()">No</button>
+                </div>
+            </div>
+
+            <div id="success-section">
+                <h1>It's a Date! ❤️</h1>
+                <p>I'm so glad it's you. I'll see you on the 14th.</p>
+            </div>
+
         </div>
     </div>
 
     <script>
         const reasons = [
-            "I admire what kind of person you are, bold, respectable, caring, charming, loving, and everyones favourite.",
-            "We bond so well that you understand me in and out, and know how to deal with me.",
-            "I can be myself when I'm with you, without the fear of being judged",
-            "You're the person I want to share every win and every meal with.",
+            "I admire your boldness, your drive, your passion, your love, your empathy, your care, your charm.",
+            "We bond so well that you understand me in and out.",
+            "I can be myself when I'm with you, without the fear of being judged.",
+            "You're the person I want to share every win and every meal with."
             "I've realised that my favourite place to be is wherever you are."
         ];
 
@@ -78,12 +150,21 @@
         function nextReason() {
             currentReason++;
             if (currentReason < reasons.length) {
-                document.getElementById('reason-display').innerText = `"${reasons[currentReason]}"`;
+                document.getElementById('reason-text').innerText = `"${reasons[currentReason]}"`;
             } else {
-                // Transition to Question
-                document.getElementById('reason-section').style.display = 'none';
-                document.getElementById('question-section').style.display = 'block';
+                showName();
             }
+        }
+
+        function showName() {
+            document.getElementById('reason-section').style.display = 'none';
+            document.getElementById('name-section').style.display = 'block';
+            
+            // Wait 3 seconds for the typing animation to finish, then show the final question
+            setTimeout(() => {
+                document.getElementById('name-section').style.display = 'none';
+                document.getElementById('final-ask').style.display = 'block';
+            }, 3500);
         }
 
         function moveButton() {
@@ -93,18 +174,18 @@
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
+            btn.style.zIndex = '999';
         }
 
         function celebrate() {
-            document.getElementById('question-section').style.display = 'none';
+            document.getElementById('final-ask').style.display = 'none';
             document.getElementById('success-section').style.display = 'block';
             
-            // Confetti Cannon
             confetti({
                 particleCount: 150,
                 spread: 70,
                 origin: { y: 0.6 },
-                colors: ['#d63384', '#ffffff', '#ff85a1']
+                colors: ['#ff4d6d', '#ffffff', '#ffb3c1']
             });
         }
     </script>
