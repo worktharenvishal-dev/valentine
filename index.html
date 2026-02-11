@@ -121,7 +121,6 @@
         <div id="success-screen" class="stage-container">
             <h1>It's a Date! ❤️</h1>
             <p style="font-weight: 600; color: #444; font-size: 1.2rem; margin-top: 10px;">See you on the 14th my beautiful princess</p>
-            <p style="color: #444; margin: 5px 0;">I'm glad you didn't say no to me x</p>
         </div>
     </div>
 
@@ -191,7 +190,7 @@
             document.getElementById('ask-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'flex';
             
-            const duration = 12 * 1000;
+            const duration = 10 * 1000;
             const end = Date.now() + duration;
             (function frame() {
                 confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
