@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Angeline</title>
+    <title>For Angeline Teh</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -21,7 +21,7 @@
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('us.jpg') center/cover;
             animation: kenburns 20s infinite alternate;
         }
-        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.2); } }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
 
         #hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .heart { position: absolute; color: rgba(255, 77, 109, 0.4); animation: floatUp 6s linear infinite; }
@@ -32,28 +32,29 @@
             padding: 40px 30px; border-radius: 30px; text-align: center; 
             width: 85%; max-width: 350px; position: relative; z-index: 10;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
+            min-height: 300px; display: flex; flex-direction: column; justify-content: center;
         }
 
-        h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.2rem; }
-        
-        /* Main Buttons */
-        #yesBtn { 
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white; border: none; padding: 15px; border-radius: 50px; 
-            font-weight: 600; width: 100%; cursor: pointer; margin-top: 20px;
-            transition: all 0.3s ease; /* Smooth growth */
+        .typewriter { 
+            font-family: 'Dancing Script', cursive; color: var(--primary); 
+            font-size: 1.6rem; line-height: 1.4; margin: 0 auto;
         }
 
-        .no-btn { 
-            background: #eee; color: #888; border: none; padding: 10px 20px; 
-            border-radius: 20px; cursor: pointer; margin-top: 15px; font-size: 0.9rem;
-        }
+        .btn-container { margin-top: 25px; transition: opacity 0.5s ease; }
+        #nextBtn, #yesBtn { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
+        .no-btn { background: #eee; color: #888; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
 
-        #name-screen, #ask-screen, #success { display: none; }
-        .typewriter { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.8rem; border-right: 3px solid var(--primary); white-space: nowrap; overflow: hidden; width: 0; margin: 0 auto; }
-        .typing-active { animation: type 2.5s steps(25) forwards, blink 0.6s infinite; }
-        @keyframes type { from { width: 0; } to { width: 100%; } }
-        @keyframes blink { 50% { border-color: transparent; } }
+        #name-screen, #ask-screen, #success-screen, #flower-container { display: none; }
+
+        /* Glowing Flower Styling */
+        #flower-container { position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); z-index: 5; }
+        .flower { position: relative; width: 40px; height: 100px; background: #2d5a27; border-radius: 10px; animation: grow 2s ease-out forwards; }
+        .petal { position: absolute; top: -15px; left: 50%; width: 30px; height: 30px; background: #ff4d6d; border-radius: 50% 50% 0 50%; transform-origin: bottom center; filter: drop-shadow(0 0 8px #ff4d6d); }
+        .petal:nth-child(2) { transform: rotate(72deg); }
+        .petal:nth-child(3) { transform: rotate(144deg); }
+        .petal:nth-child(4) { transform: rotate(216deg); }
+        .petal:nth-child(5) { transform: rotate(288deg); }
+        @keyframes grow { from { height: 0; } to { height: 100px; } }
     </style>
 </head>
 <body>
@@ -62,29 +63,40 @@
     <div id="hearts-container"></div>
 
     <div class="card">
-        <div id="start-screen">
-            <p id="msg" style="font-weight: 600;">5 years of being best friends has led us here...</p>
-            <button id="yesBtn" onclick="handleNext()">Keep reading...</button>
+        <div id="reason-screen">
+            <div id="reason-text" class="typewriter"></div>
+            <div id="next-btn-container" class="btn-container" style="opacity: 0;">
+                <button id="nextBtn" onclick="handleNext()">Keep reading...</button>
+            </div>
         </div>
 
         <div id="name-screen">
-            <div id="type-target" class="typewriter">So... Angelina Teh Hui Szen</div>
+            <div id="name-text" class="typewriter"></div>
         </div>
 
         <div id="ask-screen">
-            <h1 id="ask-title">Will you be my Valentine?</h1>
-            <button id="mainYesBtn" style="background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: all 0.3s ease;" onclick="celebrate()">YES! ❤️</button>
-            <button id="noBtn" class="no-btn" onclick="handleNo()">No</button>
+            <div id="ask-text" class="typewriter"></div>
+            <div id="ask-btn-container" class="btn-container" style="opacity: 0;">
+                <button id="yesBtn" onclick="celebrate()">YES! ❤️</button>
+                <button id="noBtn" class="no-btn" onclick="handleNo()">No</button>
+            </div>
         </div>
 
-        <div id="success">
-            <h1>It's a Date! ❤️</h1>
-            <p>I knew you couldn't say no. See you on the 14th!</p>
+        <div id="success-screen">
+            <h1 style="font-family: 'Dancing Script', cursive; color: var(--primary);">It's a Date! ❤️</h1>
+            <p>I'll see you on the 14th.</p>
+        </div>
+    </div>
+
+    <div id="flower-container">
+        <div class="flower">
+            <div class="petal"></div><div class="petal"></div>
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div>
         </div>
     </div>
 
     <script>
-        // HEARTS LOGIC
+        // BACKGROUND HEARTS
         function createHeart() {
             const container = document.getElementById('hearts-container');
             const heart = document.createElement('div');
@@ -97,74 +109,90 @@
         }
         setInterval(createHeart, 500);
 
-        // TRANSITION LOGIC
-        const items = [
-            "I admire your boldness, your drive, your passion, and your empathy.",
+        // TYPEWRITER ENGINE
+        function typeWriter(text, elementId, callback) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            const speed = 50; 
+
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        const reasons = [
+            "5 years of being best friends has led us here...",
+            "I admire your boldness, your passion, and your empathy.",
             "You understand me in and out.",
             "I can truly be myself when I'm with you.",
-            "I want to share every win and every meal with you.",
-            "My favourite place is wherever you are."
+            "I've realized my favorite place to be is wherever you are."
         ];
-        let i = 0;
+        let currentIdx = 0;
+
+        // INITIAL LOAD
+        window.onload = () => {
+            typeWriter(reasons[currentIdx], 'reason-text', showNextButton);
+        };
+
+        function showNextButton() {
+            document.getElementById('next-btn-container').style.opacity = "1";
+        }
 
         function handleNext() {
-            if (i < items.length) {
-                document.getElementById('msg').innerText = items[i];
-                i++;
+            document.getElementById('next-btn-container').style.opacity = "0";
+            currentIdx++;
+            if (currentIdx < reasons.length) {
+                typeWriter(reasons[currentIdx], 'reason-text', showNextButton);
             } else {
-                document.getElementById('start-screen').style.display = 'none';
-                document.getElementById('name-screen').style.display = 'block';
-                document.getElementById('type-target').classList.add('typing-active');
-                setTimeout(() => {
-                    document.getElementById('name-screen').style.display = 'none';
-                    document.getElementById('ask-screen').style.display = 'block';
-                }, 3500);
+                startNameReveal();
             }
         }
 
-        // NO BUTTON LOGIC
-        let noCount = 0;
-        const noTexts = [
-            "Are you sure?",
-            "Really sure??",
-            "Think again!",
-            "Last chance...",
-            "Surely not?",
-            "You're breaking my heart ;(",
-            "I'm gonna cry...",
-            "Okay, now you're just being mean!",
-            "PLEASE??",
-            "Just click the big red button already!"
-        ];
+        function startNameReveal() {
+            document.getElementById('reason-screen').style.display = 'none';
+            document.getElementById('name-screen').style.display = 'block';
+            typeWriter("So... Angelina Teh Hui Szen", "name-text", () => {
+                setTimeout(startAskReveal, 1500);
+            });
+        }
 
+        function startAskReveal() {
+            document.getElementById('name-screen').style.display = 'none';
+            document.getElementById('ask-screen').style.display = 'block';
+            typeWriter("Will you be my Valentine?", "ask-text", () => {
+                document.getElementById('ask-btn-container').style.opacity = "1";
+            });
+        }
+
+        let noCount = 0;
+        const noTexts = ["Are you sure?", "Think again!", "Please?", "Last chance!", "Wait, no!"];
         function handleNo() {
             const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('mainYesBtn');
-            
-            // Change No button text
-            if (noCount < noTexts.length) {
-                noBtn.innerText = noTexts[noCount];
-            } else {
-                noBtn.innerText = "Fine, I'll help you click Yes.";
-            }
-
-            // Make Yes button bigger
-            noCount++;
-            const newScale = 1 + (noCount * 0.35); // Increases size each time
-            const newPadding = 15 + (noCount * 5);
-            
-            yesBtn.style.transform = `scale(${newScale})`;
-            // If it gets too big, it covers the "No" button anyway
-            if (noCount > 6) {
-                noBtn.style.zIndex = "-1"; 
-                noBtn.style.opacity = "0";
-            }
+            const yesBtn = document.getElementById('yesBtn');
+            noBtn.innerText = noTexts[Math.min(noCount++, noTexts.length - 1)];
+            const scale = 1 + (noCount * 0.4);
+            yesBtn.style.transform = `scale(${scale})`;
+            if(noCount > 5) { noBtn.style.display = "none"; }
         }
 
         function celebrate() {
             document.getElementById('ask-screen').style.display = 'none';
-            document.getElementById('success').style.display = 'block';
-            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+            document.getElementById('success-screen').style.display = 'block';
+            document.getElementById('flower-container').style.display = 'block';
+            const end = Date.now() + 5000;
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         }
     </script>
 </body>
