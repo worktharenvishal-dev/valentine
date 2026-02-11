@@ -3,62 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Angeline Teh Hui Szen</title>
+    <title>For Angeline Teh</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        /* FULL COMPLEXITY CSS INTEGRATION */
-        *, *::after, *::before { padding: 0; margin: 0; box-sizing: border-box; }
-        :root { --primary: #ff4d6d; --secondary: #ff758f; --dark-color: #000; }
+        :root { --primary: #ff4d6d; --secondary: #ff758f; }
 
         body { 
-            margin: 0; font-family: 'Poppins', sans-serif; 
+            margin: 0; padding: 0; font-family: 'Poppins', sans-serif; 
             display: flex; align-items: center; justify-content: center; 
-            height: 100vh; overflow: hidden; background-color: var(--dark-color);
-            perspective: 1000px;
+            height: 100vh; overflow: hidden; background: #000;
         }
-
+        
+        #bg-container { position: fixed; top:0; left:0; width:100%; height:100%; z-index: -1; overflow: hidden; }
         #bg-image { 
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('us.jpg') center/cover;
-            z-index: -1; animation: kenburns 20s infinite alternate;
+            width: 100%; height: 100%; 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('us.jpg') center/cover;
+            animation: kenburns 20s infinite alternate;
         }
         @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
 
-        /* THE INTERACTIVE CARD */
+        #hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .heart { position: absolute; color: rgba(255, 77, 109, 0.4); animation: floatUp 6s linear infinite; }
+        @keyframes floatUp { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
+
         .card { 
             background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
             padding: 40px 30px; border-radius: 30px; text-align: center; 
-            width: 85%; max-width: 350px; position: relative; z-index: 2000;
+            width: 85%; max-width: 350px; position: relative; z-index: 10;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
             min-height: 300px; display: flex; flex-direction: column; justify-content: center;
         }
 
-        .typewriter { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.6rem; line-height: 1.4; }
+        .typewriter { 
+            font-family: 'Dancing Script', cursive; color: var(--primary); 
+            font-size: 1.6rem; line-height: 1.4; margin: 0 auto;
+        }
+
         .btn-container { margin-top: 25px; transition: opacity 0.5s ease; }
-        button.main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; }
+        button.main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
         .no-btn { background: #eee; color: #888; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
 
-        /* FLOWER SYSTEM (FROM STYLE.CSS) */
-        .flowers { position: fixed; bottom: 10vmin; left: 50%; transform: translateX(-50%) scale(0.7); display: none; z-index: 100; }
-        .flower__line { height: 55vmin; width: 1.5vmin; background-image: linear-gradient(to top, #14757a, #39c6d6); animation: grow-flower-tree 4s backwards; }
-        .flower__leaf { position: absolute; background-image: linear-gradient(to top, #ea4365, #f879e3); width: 8vmin; height: 11vmin; border-radius: 51% 49% 47% 53%/44% 45% 55% 69%; transform-origin: bottom center; }
-        .flower__white-circle { position: absolute; left: -3.5vmin; top: -3vmin; width: 9vmin; height: 4vmin; border-radius: 50%; background-color: #fff; }
-        .flower__light { position: absolute; bottom: 0vmin; width: 1vmin; height: 1vmin; background-color: rgb(255, 251, 0); border-radius: 50%; animation: light-ans 4s linear infinite; }
-        
-        @keyframes grow-flower-tree { 0% { height: 0; } }
-        @keyframes light-ans { 0% { opacity: 0; transform: translateY(0); } 25% { opacity: 1; transform: translateY(-5vmin) translateX(-2vmin); } 100% { transform: translateY(-30vmin); opacity: 0; } }
-        
-        .success-title { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: white; position: fixed; top: 15%; width: 100%; text-align: center; text-shadow: 0 0 20px var(--primary); z-index: 2000; display: none; }
-        
         #name-screen, #ask-screen, #success-screen { display: none; }
     </style>
 </head>
-<body class="not-loaded">
+<body>
 
-    <div id="bg-image"></div>
+    <div id="bg-container"><div id="bg-image"></div></div>
+    <div id="hearts-container"></div>
 
-    <div class="card" id="main-card">
+    <div class="card">
         <div id="reason-screen">
             <div id="reason-text" class="typewriter"></div>
             <div id="next-btn-container" class="btn-container" style="opacity: 0;">
@@ -77,56 +71,62 @@
                 <button id="noBtn" class="no-btn" onclick="handleNo()">No</button>
             </div>
         </div>
-    </div>
 
-    <h1 class="success-title" id="final-love-text"></h1>
-
-    <div class="flowers" id="flower-complex">
-        <div class="flower flower--1">
-            <div class="flower__leafs">
-                <div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div>
-                <div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div>
-                <div class="flower__white-circle"></div>
-                <div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div>
-            </div>
-            <div class="flower__line"></div>
-        </div>
-        <div class="flower flower--2" style="left: 50%; transform: rotate(20deg);">
-            <div class="flower__leafs">
-                <div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div>
-                <div class="flower__white-circle"></div>
-            </div>
-            <div class="flower__line" style="height: 60vmin;"></div>
-        </div>
-        <div class="flower__grass flower__grass--1" style="position: absolute; bottom: 12vmin; left: -7vmin;">
-            <div class="flower__grass--top" style="width: 7vmin; height: 10vmin; border-right: 1.5vmin solid #159faa;"></div>
-            <div class="flower__grass--bottom" style="height: 25vmin; background: linear-gradient(to top, transparent, #159faa);"></div>
+        <div id="success-screen">
+            <h1 style="font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.5rem;">It's a Date! ❤️</h1>
+            <p style="font-weight: 600; color: #444;">I'll see you on the 14th.</p>
         </div>
     </div>
 
     <script>
-        // TYPEWRITER SYSTEM
+        // BACKGROUND HEARTS
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️'; heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 500);
+
+        // TYPEWRITER ENGINE
         function typeWriter(text, elementId, callback) {
-            let i = 0; const el = document.getElementById(elementId); el.innerHTML = "";
-            function type() { if (i < text.length) { el.innerHTML += text.charAt(i); i++; setTimeout(type, 50); } else if (callback) callback(); }
+            let i = 0; const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                } else if (callback) callback();
+            }
             type();
         }
 
-        const items = [
-            "I admire your boldness, your drive, your passion, and your empathy.",
-            "We bond so well that you understand me in and out.",
-            "I can truly be myself when I'm with you, without the fear of being judged.",
-            "You're the person I want to share every win and every meal with.",
-            "I've realised that my favourite place to be is wherever you are."
+        const reasons = [
+            "5 years of being best friends has led us here...",
+            "I admire your boldness, your passion, and your empathy.",
+            "You understand me in and out.",
+            "I can truly be myself when I'm with you.",
+            "I've realized my favorite place to be is wherever you are."
         ];
         let currentIdx = 0;
 
-        window.onload = () => { typeWriter("5 years of being best friends has led us here...", 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1"); };
+        window.onload = () => {
+            typeWriter(reasons[currentIdx], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1");
+        };
 
         function handleNext() {
             document.getElementById('next-btn-container').style.opacity = "0";
-            if (currentIdx < items.length) { typeWriter(items[currentIdx++], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1"); } 
-            else { startNameReveal(); }
+            currentIdx++;
+            if (currentIdx < reasons.length) {
+                typeWriter(reasons[currentIdx], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1");
+            } else {
+                startNameReveal();
+            }
         }
 
         function startNameReveal() {
@@ -142,24 +142,19 @@
         }
 
         let noCount = 0;
+        const noTexts = ["Are you sure?", "Think again!", "Please?", "Last chance!", "Wait, no!"];
         function handleNo() {
-            const noBtn = document.getElementById('noBtn'); const yesBtn = document.getElementById('yesBtn');
-            noBtn.innerText = ["Are you sure?", "Think again!", "Please?", "Last chance!"][Math.min(noCount++, 3)];
-            yesBtn.style.transform = `scale(${1 + noCount * 0.4})`;
-            if(noCount > 4) noBtn.style.display = "none";
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            noBtn.innerText = noTexts[Math.min(noCount++, noTexts.length - 1)];
+            const scale = 1 + (noCount * 0.4);
+            yesBtn.style.transform = `scale(${scale})`;
+            if(noCount > 5) { noBtn.style.display = "none"; }
         }
 
         function celebrate() {
-            document.getElementById('main-card').style.display = 'none';
-            document.getElementById('flower-complex').style.display = 'block';
-            document.getElementById('final-love-text').style.display = 'block';
-            
-            // "I LOVE YOU" Script Integration
-            const titles = 'IT\'S A DATE! ❤️'.split('');
-            let tIdx = 0;
-            function appendTitle() { if (tIdx < titles.length) { document.getElementById('final-love-text').innerHTML += titles[tIdx++]; setTimeout(appendTitle, 300); } }
-            appendTitle();
-
+            document.getElementById('ask-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
             confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
         }
     </script>
