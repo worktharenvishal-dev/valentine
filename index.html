@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Angeline Teh</title>
+    <title>For Angelina Teh</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -32,7 +32,7 @@
             padding: 40px 30px; border-radius: 30px; text-align: center; 
             width: 85%; max-width: 350px; position: relative; z-index: 10;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
-            min-height: 300px; display: flex; flex-direction: column; justify-content: center;
+            min-height: 320px; display: flex; flex-direction: column; justify-content: center;
         }
 
         .typewriter { 
@@ -40,40 +40,47 @@
             font-size: 1.6rem; line-height: 1.4; margin: 0 auto;
         }
 
-        .btn-container { margin-top: 25px; transition: opacity 0.5s ease; }
+        .big-question { font-size: 2.2rem !important; font-weight: 700; }
+
+        .btn-container { margin-top: 25px; opacity: 0; transition: opacity 0.3s ease; visibility: hidden; }
+        .btn-container.show { opacity: 1; visibility: visible; }
+        
         button.main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
         .no-btn { background: #eee; color: #888; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
 
         #music-control {
             position: fixed; top: 20px; right: 20px; z-index: 2000;
             background: rgba(255,255,255,0.8); border-radius: 50%; width: 45px; height: 45px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 20px; border: none;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; border: none;
         }
 
-        #name-screen, #ask-screen, #success-screen { display: none; }
+        /* Success Animation */
+        #success-screen h1 { 
+            font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 4rem;
+            animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+        #reason-screen, #name-screen, #ask-screen, #success-screen { display: none; }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="blessed.mp3" type="audio/mpeg">
-    </audio>
-
+    <audio id="bgMusic" loop><source src="blessed.mp3" type="audio/mpeg"></audio>
     <button id="music-control" onclick="toggleMusic()">🎵</button>
-
     <div id="bg-container"><div id="bg-image"></div></div>
     <div id="hearts-container"></div>
 
     <div class="card">
         <div id="start-screen">
-            <p id="msg" style="font-weight: 600;">5 years of being best friends has led us here...</p>
+            <p style="font-weight: 600;">5 years of memories have led to this moment...</p>
+            <p style="font-weight: 600;">Why not we make this year special? with the both of us?</p>
             <button class="main" onclick="startExperience()">Start ❤️</button>
         </div>
 
-        <div id="reason-screen" style="display:none;">
+        <div id="reason-screen">
             <div id="reason-text" class="typewriter"></div>
-            <div id="next-btn-container" class="btn-container" style="opacity: 0;">
+            <div id="reason-btn-container" class="btn-container">
                 <button class="main" onclick="handleNext()">Keep reading...</button>
             </div>
         </div>
@@ -83,119 +90,102 @@
         </div>
 
         <div id="ask-screen">
-            <div id="ask-text" class="typewriter"></div>
-            <div id="ask-btn-container" class="btn-container" style="opacity: 0;">
+            <div id="ask-text" class="typewriter big-question"></div>
+            <div id="ask-btn-container" class="btn-container">
                 <button class="main" id="yesBtn" onclick="celebrate()">YES! ❤️</button>
                 <button id="noBtn" class="no-btn" onclick="handleNo()">No</button>
             </div>
         </div>
 
         <div id="success-screen">
-            <h1 style="font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.5rem;">It's a Date! ❤️</h1>
-            <p style="font-weight: 600; color: #444;">I'll see you on the 14th.</p>
+            <h1>YAY! ❤️</h1>
+            <p style="font-weight: 600; color: #444;">It's a date!</p>
+            <p>I'm glad you didn't say no to me x</p>
+            <p>See you on the 14th my beautiful princess</p>
         </div>
     </div>
 
     <script>
         const audio = document.getElementById('bgMusic');
-        
-        function toggleMusic() {
-            if (audio.paused) { audio.play(); } else { audio.pause(); }
-        }
-
-        function startExperience() {
-            audio.play().catch(e => console.log("Audio play blocked until interaction"));
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('reason-screen').style.display = 'block';
-            typeWriter(reasons[currentIdx], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1");
-        }
-
-        function createHeart() {
-            const container = document.getElementById('hearts-container');
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤️'; heart.classList.add('heart');
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
-            container.appendChild(heart);
-            setTimeout(() => heart.remove(), 6000);
-        }
-        setInterval(createHeart, 500);
-
-        function typeWriter(text, elementId, callback) {
-            let i = 0; const element = document.getElementById(elementId);
-            element.innerHTML = "";
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, 50);
-                } else if (callback) callback();
-            }
-            type();
-        }
-
         const reasons = [
             "I admire your boldness, your passion, and your empathy.",
-            "You understand me in and out.",
+            "You understand me better than anyone else.",
             "I can truly be myself when I'm with you.",
             "I want to share every win and every meal with you.",
             "I've realized my favorite place to be is wherever you are."
         ];
         let currentIdx = 0;
 
+        function toggleMusic() { audio.paused ? audio.play() : audio.pause(); }
+
+        function startExperience() {
+            audio.play().catch(() => {});
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('reason-screen').style.display = 'flex';
+            runTypewriter(reasons[currentIdx], 'reason-text', 'reason-btn-container');
+        }
+
+        function runTypewriter(text, elementId, btnId) {
+            const el = document.getElementById(elementId);
+            const btn = document.getElementById(btnId);
+            btn.classList.remove('show');
+            el.innerHTML = "";
+            let i = 0;
+            (function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i++);
+                    setTimeout(type, 50);
+                } else { btn.classList.add('show'); }
+            })();
+        }
+
         function handleNext() {
-            document.getElementById('next-btn-container').style.opacity = "0";
             currentIdx++;
             if (currentIdx < reasons.length) {
-                typeWriter(reasons[currentIdx], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1");
+                runTypewriter(reasons[currentIdx], 'reason-text', 'reason-btn-container');
             } else {
-                startNameReveal();
+                document.getElementById('reason-screen').style.display = 'none';
+                document.getElementById('name-screen').style.display = 'flex';
+                runTypewriter("So... My Beautiful Angelina Teh Hui Szen", 'name-text', null);
+                setTimeout(() => {
+                    document.getElementById('name-screen').style.display = 'none';
+                    document.getElementById('ask-screen').style.display = 'flex';
+                    runTypewriter("Will you be my Valentine?", 'ask-text', 'ask-btn-container');
+                }, 3500);
             }
         }
 
-        function startNameReveal() {
-            document.getElementById('reason-screen').style.display = 'none';
-            document.getElementById('name-screen').style.display = 'block';
-            typeWriter("So... Angelina Teh Hui Szen", "name-text", () => setTimeout(startAskReveal, 1500));
-        }
-
-        function startAskReveal() {
-            document.getElementById('name-screen').style.display = 'none';
-            document.getElementById('ask-screen').style.display = 'block';
-            typeWriter("Will you be my Valentine?", "ask-text", () => document.getElementById('ask-btn-container').style.opacity = "1");
-        }
-
         let noCount = 0;
-        const noTexts = ["Are you sure?", "Think again!", "Please?", "Last chance!", "Wait, no!"];
         function handleNo() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
-            noBtn.innerText = noTexts[Math.min(noCount++, noTexts.length - 1)];
-            const scale = 1 + (noCount * 0.4);
-            yesBtn.style.transform = `scale(${scale})`;
-            if(noCount > 5) { noBtn.style.display = "none"; }
+            const texts = ["Are you sure?", "Think again!", "Please?", "Last chance!", "Wait, no!"];
+            noBtn.innerText = texts[Math.min(noCount++, 4)];
+            yesBtn.style.transform = `scale(${1 + noCount * 0.4})`;
+            if(noCount > 5) noBtn.style.display = "none";
         }
 
         function celebrate() {
             document.getElementById('ask-screen').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'block';
+            document.getElementById('success-screen').style.display = 'flex';
             
-            // DRAMATIC CONTINUOUS CONFETTI
-            var duration = 5 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-            var interval = setInterval(function() {
-              var timeLeft = animationEnd - Date.now();
-              if (timeLeft <= 0) { return clearInterval(interval); }
-              var particleCount = 50 * (timeLeft / duration);
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
+            const duration = 10 * 1000;
+            const end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         }
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️'; heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }, 500);
     </script>
 </body>
 </html>
