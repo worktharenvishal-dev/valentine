@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Best Friend and Lover</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --pink: #d63384; --overlay: rgba(255, 255, 255, 0.85); }
+        
+        body { 
+            margin: 0; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center;
+            background-image: url('us.jpg'); /* REPLACE WITH YOUR IMAGE FILENAME */
+            background-size: cover; background-position: center;
+        }
+
+        .glass-card {
+            background: var(--overlay); backdrop-filter: blur(5px);
+            padding: 30px; border-radius: 20px; width: 85%; max-width: 400px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #reason-section, #question-section, #success-section { display: none; }
+        #reason-section { display: block; } /* Start with reasons */
+
+        .reason-text { font-style: italic; color: var(--pink); font-size: 1.1rem; margin: 20px 0; min-height: 60px; }
+        
+        button { 
+            padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; 
+        }
+
+        .btn-next { background: var(--pink); color: white; width: 100%; }
+        .btn-yes { background: var(--pink); color: white; padding: 12px 40px; }
+        .btn-no { background: #eee; color: #777; position: absolute; }
+
+        .btn-container { display: flex; justify-content: center; gap: 20px; height: 50px; position: relative; margin-top: 20px; }
+        
+        h1 { color: var(--pink); font-size: 1.5rem; margin-top: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <div id="reason-section">
+            <h1>A few reasons why...</h1>
+            <div id="reason-display" class="reason-text">"5 years of memories..."</div>
+            <button class="btn-next" onclick="nextReason()">Next Reason ❤️</button>
+        </div>
+
+        <div id="question-section">
+            <h1>So, Angelina Teh Hui Szen...</h1>
+            <p>5 years as best friends has been a dream. Let's make this year special., with each other.</p>
+            <p><strong>Will you be my Valentine?</strong></p>
+            <div class="btn-container">
+                <button id="yesBtn" class="btn-yes" onclick="celebrate()">YES!</button>
+                <button id="noBtn" class="btn-no" onmouseover="moveButton()">No</button>
+            </div>
+        </div>
+
+        <div id="success-section">
+            <h1 style="font-size: 2rem;">CONGRATULATIONS ON LOCKING YOUR SPOT 🎉</h1>
+            <p>I have plans ready for the both of us! I'll pick you up on the 14th!</p>
+            <p>Check your iMessage ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const reasons = [
+            "I admire what kind of person you are, bold, respectable, caring, charming, loving, and everyones favourite.",
+            "We bond so well that you understand me in and out, and know how to deal with me.",
+            "I can be myself when I'm with you, without the fear of being judged",
+            "You're the person I want to share every win and every meal with.",
+            "I've realised that my favourite place to be is wherever you are."
+        ];
+
+        let currentReason = 0;
+
+        function nextReason() {
+            currentReason++;
+            if (currentReason < reasons.length) {
+                document.getElementById('reason-display').innerText = `"${reasons[currentReason]}"`;
+            } else {
+                // Transition to Question
+                document.getElementById('reason-section').style.display = 'none';
+                document.getElementById('question-section').style.display = 'block';
+            }
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function celebrate() {
+            document.getElementById('question-section').style.display = 'none';
+            document.getElementById('success-section').style.display = 'block';
+            
+            // Confetti Cannon
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#d63384', '#ffffff', '#ff85a1']
+            });
+        }
+    </script>
+</body>
+</html>
