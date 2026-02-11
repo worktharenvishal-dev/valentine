@@ -3,109 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Angelina Teh</title>
+    <title>For Angeline</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root {
-            --primary: #ff4d6d;
-            --secondary: #ff758f;
-            --glass: rgba(255, 255, 255, 0.85);
-        }
+        :root { --primary: #ff4d6d; --secondary: #ff758f; }
 
         body { 
-            margin: 0; padding: 0; 
-            font-family: 'Poppins', sans-serif; 
+            margin: 0; padding: 0; font-family: 'Poppins', sans-serif; 
             display: flex; align-items: center; justify-content: center; 
-            height: 100vh; overflow: hidden;
-            background: #121212; 
+            height: 100vh; overflow: hidden; background: #000;
         }
         
-        #bg { 
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('us.jpg') center/cover; 
-            z-index: -1; transform: scale(1.1); filter: blur(2px);
+        #bg-container { position: fixed; top:0; left:0; width:100%; height:100%; z-index: -1; overflow: hidden; }
+        #bg-image { 
+            width: 100%; height: 100%; 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('us.jpg') center/cover;
+            animation: kenburns 20s infinite alternate;
         }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.2); } }
+
+        #hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .heart { position: absolute; color: rgba(255, 77, 109, 0.4); animation: floatUp 6s linear infinite; }
+        @keyframes floatUp { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
 
         .card { 
-            background: var(--glass); 
-            backdrop-filter: blur(10px);
-            padding: 40px 30px; 
-            border-radius: 25px; 
-            text-align: center; 
-            width: 85%; max-width: 350px; 
-            position: relative; z-index: 999;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: all 0.5s ease;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            padding: 40px 30px; border-radius: 30px; text-align: center; 
+            width: 85%; max-width: 350px; position: relative; z-index: 10;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
         }
 
-        h1 { 
-            font-family: 'Dancing Script', cursive; 
-            color: var(--primary); 
-            font-size: 2.2rem; 
-            margin-bottom: 15px;
-        }
-
-        p { color: #444; line-height: 1.6; font-size: 1rem; font-weight: 400; }
-
-        button { 
+        h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.2rem; }
+        
+        /* Main Buttons */
+        #yesBtn { 
             background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white; border: none; padding: 15px 25px; 
-            border-radius: 50px; font-weight: 600; width: 100%; font-size: 1rem;
-            cursor: pointer; display: block; margin-top: 25px;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
-            transition: 0.3s;
+            color: white; border: none; padding: 15px; border-radius: 50px; 
+            font-weight: 600; width: 100%; cursor: pointer; margin-top: 20px;
+            transition: all 0.3s ease; /* Smooth growth */
         }
-
-        button:active { transform: scale(0.95); }
 
         .no-btn { 
-            background: transparent; color: #888; border: 1px solid #ddd; 
-            margin-top: 15px; width: auto; display: inline-block; padding: 8px 20px; 
-            font-size: 0.8rem; box-shadow: none;
+            background: #eee; color: #888; border: none; padding: 10px 20px; 
+            border-radius: 20px; cursor: pointer; margin-top: 15px; font-size: 0.9rem;
         }
-
-        /* Typewriter Styling */
-        .typewriter {
-            font-family: 'Dancing Script', cursive;
-            color: var(--primary);
-            font-size: 1.8rem;
-            border-right: 3px solid var(--primary);
-            white-space: nowrap;
-            overflow: hidden;
-            width: 0;
-            margin: 0 auto;
-        }
-
-        /* Animations */
-        @keyframes type { from { width: 0; } to { width: 100%; } }
-        @keyframes blink { 50% { border-color: transparent; } }
-
-        .typing-active { animation: type 2.5s steps(25) forwards, blink 0.6s infinite; }
 
         #name-screen, #ask-screen, #success { display: none; }
-
-        /* Floating Hearts Decor */
-        .floating-heart {
-            position: absolute; color: var(--primary); opacity: 0.6;
-            animation: float 4s infinite ease-in-out;
-            z-index: -1;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(20deg); }
-        }
+        .typewriter { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.8rem; border-right: 3px solid var(--primary); white-space: nowrap; overflow: hidden; width: 0; margin: 0 auto; }
+        .typing-active { animation: type 2.5s steps(25) forwards, blink 0.6s infinite; }
+        @keyframes type { from { width: 0; } to { width: 100%; } }
+        @keyframes blink { 50% { border-color: transparent; } }
     </style>
 </head>
 <body>
 
-    <div id="bg"></div>
+    <div id="bg-container"><div id="bg-image"></div></div>
+    <div id="hearts-container"></div>
 
     <div class="card">
         <div id="start-screen">
-            <p id="msg" style="font-weight: 600; font-size: 1.1rem;">5 years of being best friends has led us here...</p>
-            <button type="button" onclick="handleNext()">Keep reading...</button>
+            <p id="msg" style="font-weight: 600;">5 years of being best friends has led us here...</p>
+            <button id="yesBtn" onclick="handleNext()">Keep reading...</button>
         </div>
 
         <div id="name-screen">
@@ -113,42 +72,49 @@
         </div>
 
         <div id="ask-screen">
-            <h1>Will you be my Valentine?</h1>
-            <p>After 5 years of being best friends, why don't we make this year special together?</p>
-            <button onclick="celebrate()">YES! ❤️</button>
-            <button id="no" class="no-btn" onmouseover="run()" onclick="run()">No</button>
+            <h1 id="ask-title">Will you be my Valentine?</h1>
+            <button id="mainYesBtn" style="background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: all 0.3s ease;" onclick="celebrate()">YES! ❤️</button>
+            <button id="noBtn" class="no-btn" onclick="handleNo()">No</button>
         </div>
 
         <div id="success">
-            <h1 style="font-size: 3rem;">YAY!</h1>
-            <p style="font-size: 1.2rem; font-weight: 600;">It's a date! ❤️</p>
-            <p>I'll see you on the 14th.</p>
+            <h1>It's a Date! ❤️</h1>
+            <p>I knew you couldn't say no. See you on the 14th!</p>
         </div>
     </div>
 
     <script>
+        // HEARTS LOGIC
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️'; heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 500);
+
+        // TRANSITION LOGIC
         const items = [
-            "I admire your boldness, your drive, your passion, your love, your empathy, your care, your charm.",
-            "We bond so well that you understand me in and out.",
-            "I can be myself when I'm with you, without the fear of being judged.",
-            "You're the person I want to share every win and every meal with.",
-            "I've realised that my favourite place to be is wherever you are."
+            "I admire your boldness, your drive, your passion, and your empathy.",
+            "You understand me in and out.",
+            "I can truly be myself when I'm with you.",
+            "I want to share every win and every meal with you.",
+            "My favourite place is wherever you are."
         ];
         let i = 0;
 
         function handleNext() {
             if (i < items.length) {
-                document.getElementById('msg').style.opacity = 0;
-                setTimeout(() => {
-                    document.getElementById('msg').innerText = items[i];
-                    document.getElementById('msg').style.opacity = 1;
-                    i++;
-                }, 200);
+                document.getElementById('msg').innerText = items[i];
+                i++;
             } else {
                 document.getElementById('start-screen').style.display = 'none';
                 document.getElementById('name-screen').style.display = 'block';
                 document.getElementById('type-target').classList.add('typing-active');
-                
                 setTimeout(() => {
                     document.getElementById('name-screen').style.display = 'none';
                     document.getElementById('ask-screen').style.display = 'block';
@@ -156,30 +122,49 @@
             }
         }
 
-        function run() {
-            const b = document.getElementById('no');
-            b.style.position = 'fixed';
-            b.style.left = Math.random() * 70 + 10 + '%';
-            b.style.top = Math.random() * 70 + 10 + '%';
+        // NO BUTTON LOGIC
+        let noCount = 0;
+        const noTexts = [
+            "Are you sure?",
+            "Really sure??",
+            "Think again!",
+            "Last chance...",
+            "Surely not?",
+            "You're breaking my heart ;(",
+            "I'm gonna cry...",
+            "Okay, now you're just being mean!",
+            "PLEASE??",
+            "Just click the big red button already!"
+        ];
+
+        function handleNo() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('mainYesBtn');
+            
+            // Change No button text
+            if (noCount < noTexts.length) {
+                noBtn.innerText = noTexts[noCount];
+            } else {
+                noBtn.innerText = "Fine, I'll help you click Yes.";
+            }
+
+            // Make Yes button bigger
+            noCount++;
+            const newScale = 1 + (noCount * 0.35); // Increases size each time
+            const newPadding = 15 + (noCount * 5);
+            
+            yesBtn.style.transform = `scale(${newScale})`;
+            // If it gets too big, it covers the "No" button anyway
+            if (noCount > 6) {
+                noBtn.style.zIndex = "-1"; 
+                noBtn.style.opacity = "0";
+            }
         }
 
         function celebrate() {
             document.getElementById('ask-screen').style.display = 'none';
             document.getElementById('success').style.display = 'block';
-            
-            const duration = 5 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 50 * (timeLeft / duration);
-                confetti({...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-                confetti({...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-            }, 250);
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
         }
     </script>
 </body>
