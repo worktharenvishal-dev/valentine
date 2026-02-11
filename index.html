@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Angelina Teh</title>
+    <title>For Angeline Teh</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -44,16 +44,34 @@
         button.main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
         .no-btn { background: #eee; color: #888; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
 
+        #music-control {
+            position: fixed; top: 20px; right: 20px; z-index: 2000;
+            background: rgba(255,255,255,0.8); border-radius: 50%; width: 45px; height: 45px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 20px; border: none;
+        }
+
         #name-screen, #ask-screen, #success-screen { display: none; }
     </style>
 </head>
 <body>
 
+    <audio id="bgMusic" loop>
+        <source src="blessed.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-control" onclick="toggleMusic()">🎵</button>
+
     <div id="bg-container"><div id="bg-image"></div></div>
     <div id="hearts-container"></div>
 
     <div class="card">
-        <div id="reason-screen">
+        <div id="start-screen">
+            <p id="msg" style="font-weight: 600;">5 years of being best friends has led us here...</p>
+            <button class="main" onclick="startExperience()">Start ❤️</button>
+        </div>
+
+        <div id="reason-screen" style="display:none;">
             <div id="reason-text" class="typewriter"></div>
             <div id="next-btn-container" class="btn-container" style="opacity: 0;">
                 <button class="main" onclick="handleNext()">Keep reading...</button>
@@ -74,13 +92,24 @@
 
         <div id="success-screen">
             <h1 style="font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.5rem;">It's a Date! ❤️</h1>
-            <p style="font-weight: 600; color: #444;">I know you will never say no to me x.</p>
             <p style="font-weight: 600; color: #444;">I'll see you on the 14th.</p>
         </div>
     </div>
 
     <script>
-        // BACKGROUND HEARTS
+        const audio = document.getElementById('bgMusic');
+        
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); } else { audio.pause(); }
+        }
+
+        function startExperience() {
+            audio.play().catch(e => console.log("Audio play blocked until interaction"));
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('reason-screen').style.display = 'block';
+            typeWriter(reasons[currentIdx], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1");
+        }
+
         function createHeart() {
             const container = document.getElementById('hearts-container');
             const heart = document.createElement('div');
@@ -93,7 +122,6 @@
         }
         setInterval(createHeart, 500);
 
-        // TYPEWRITER ENGINE
         function typeWriter(text, elementId, callback) {
             let i = 0; const element = document.getElementById(elementId);
             element.innerHTML = "";
@@ -108,17 +136,13 @@
         }
 
         const reasons = [
-            "I admire your boldness, your drive, your passion, your love, your empathy, your care, your charm.",
-            "We bond so well that you understand me in and out.",
-            "I can be myself when I'm with you, without the fear of being judged.",
-            "You're the person I want to share every win and every meal with.",
-            "I've realised that my favourite place to be is wherever you are."
+            "I admire your boldness, your passion, and your empathy.",
+            "You understand me in and out.",
+            "I can truly be myself when I'm with you.",
+            "I want to share every win and every meal with you.",
+            "I've realized my favorite place to be is wherever you are."
         ];
         let currentIdx = 0;
-
-        window.onload = () => {
-            typeWriter(reasons[currentIdx], 'reason-text', () => document.getElementById('next-btn-container').style.opacity = "1");
-        };
 
         function handleNext() {
             document.getElementById('next-btn-container').style.opacity = "0";
@@ -156,7 +180,21 @@
         function celebrate() {
             document.getElementById('ask-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'block';
-            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+            
+            // DRAMATIC CONTINUOUS CONFETTI
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) { return clearInterval(interval); }
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
     </script>
 </body>
